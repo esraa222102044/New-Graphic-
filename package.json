@@ -1,0 +1,17 @@
+{
+  "name": "new-graphic",
+  "version": "1.0.0",
+  "description": "New Graphic - Platform for managing advertising and promotional services",
+  "main": "index.js",
+  "scripts": {
+    "serve": "firebase serve",
+    "deploy": "firebase deploy",
+    "functions": "firebase deploy --only functions"
+  },
+  "keywords": ["firebase", "pwa", "advertising"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  }
+}

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#2196F3">
+    <title>لوحة التحكم - New Graphic</title>
+    
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/icon-192.png">
+    <link rel="stylesheet" href="/css/main.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>New Graphic</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="/" class="nav-link">الرئيسية</a>
+                    <a href="#orders" class="nav-link">الطلبات</a>
+                    <a href="#" class="nav-link" id="notificationsLink">
+                        الإشعارات
+                        <span class="badge" id="notificationBadge" style="display: none;"></span>
+                    </a>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-icon" id="userBtn">
+                        <span id="userName"></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="container">
+            <!-- User Dashboard -->
+            <div id="clientDashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>لوحة التحكم</h2>
+                    <button class="btn btn-primary" id="newOrderBtn">طلب جديد</button>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3 id="totalOrders">0</h3>
+                            <p>إجمالي الطلبات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏳</div>
+                        <div class="stat-content">
+                            <h3 id="pendingOrders">0</h3>
+                            <p>قيد الانتظار</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <h3 id="completedOrders">0</h3>
+                            <p>مكتملة</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="orders-section">
+                    <h3>طلباتي</h3>
+                    <div class="orders-filters">
+                        <button class="filter-btn active" data-status="all">الكل</button>
+                        <button class="filter-btn" data-status="pending">قيد الانتظار</button>
+                        <button class="filter-btn" data-status="in_progress">قيد التنفيذ</button>
+                        <button class="filter-btn" data-status="ready">جاهز</button>
+                        <button class="filter-btn" data-status="delivered">مكتمل</button>
+                    </div>
+                    <div id="ordersList" class="orders-list">
+                        <div class="loading">جاري تحميل الطلبات...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="adminDashboard" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>لوحة تحكم المشرف</h2>
+                    <div class="header-actions">
+                        <button class="btn btn-primary" id="addServiceBtn">إضافة خدمة</button>
+                        <button class="btn btn-secondary" id="addPackageBtn">إضافة باقة</button>
+                    </div>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">📋</div>
+                        <div class="stat-content">
+                            <h3 id="adminTotalOrders">0</h3>
+                            <p>إجمالي الطلبات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-content">
+                            <h3 id="totalClients">0</h3>
+                            <p>العملاء</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-content">
+                            <h3 id="totalRevenue">0</h3>
+                            <p>الإيرادات</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🎨</div>
+                        <div class="stat-content">
+                            <h3 id="totalServices">0</h3>
+                            <p>الخدمات</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="orders">الطلبات</button>
+                    <button class="tab-btn" data-tab="services">الخدمات</button>
+                    <button class="tab-btn" data-tab="clients">العملاء</button>
+                    <button class="tab-btn" data-tab="reports">التقارير</button>
+                </div>
+
+                <div class="tab-content">
+                    <div id="ordersTab" class="tab-pane active">
+                        <div class="orders-filters">
+                            <button class="filter-btn active" data-status="all">الكل</button>
+                            <button class="filter-btn" data-status="pending">قيد الانتظار</button>
+                            <button class="filter-btn" data-status="in_progress">قيد التنفيذ</button>
+                            <button class="filter-btn" data-status="ready">جاهز</button>
+                            <button class="filter-btn" data-status="delivered">مكتمل</button>
+                        </div>
+                        <div id="adminOrdersList" class="orders-list">
+                            <div class="loading">جاري تحميل الطلبات...</div>
+                        </div>
+                    </div>
+
+                    <div id="servicesTab" class="tab-pane">
+                        <div id="adminServicesList" class="services-grid">
+                            <div class="loading">جاري تحميل الخدمات...</div>
+                        </div>
+                    </div>
+
+                    <div id="clientsTab" class="tab-pane">
+                        <div id="clientsList">
+                            <div class="loading">جاري تحميل العملاء...</div>
+                        </div>
+                    </div>
+
+                    <div id="reportsTab" class="tab-pane">
+                        <div class="reports-section">
+                            <h3>التقارير والإحصائيات</h3>
+                            <p>قريباً...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="whatsapp-float" id="whatsappBtn" title="تواصل معنا على واتساب">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
+            <path d="M16 0C7.164 0 0 7.164 0 16c0 2.827.743 5.484 2.043 7.787L0 32l8.428-2.007A15.894 15.894 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/>
+        </svg>
+    </a>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav" id="bottomNav">
+        <a href="/" class="bottom-nav-item">
+            <span class="icon">🏠</span>
+            <span class="label">الرئيسية</span>
+        </a>
+        <a href="/dashboard.html" class="bottom-nav-item active">
+            <span class="icon">📊</span>
+            <span class="label">لوحة التحكم</span>
+        </a>
+        <a href="#notifications" class="bottom-nav-item">
+            <span class="icon">🔔</span>
+            <span class="label">الإشعارات</span>
+        </a>
+    </nav>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/services.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/whatsapp.js"></script>
+    <script src="/js/dashboard.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
