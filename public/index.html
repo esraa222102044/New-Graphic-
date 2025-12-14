@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="New Graphic - منصة خدمات الدعاية والإعلان">
+    <meta name="theme-color" content="#2196F3">
+    <title>New Graphic - منصة الدعاية والإعلان</title>
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/assets/icon-192.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-brand">
+                    <h1>New Graphic</h1>
+                </div>
+                <div class="nav-menu" id="navMenu">
+                    <a href="#home" class="nav-link">الرئيسية</a>
+                    <a href="#services" class="nav-link">الخدمات</a>
+                    <a href="#about" class="nav-link">من نحن</a>
+                    <a href="#contact" class="nav-link">اتصل بنا</a>
+                </div>
+                <div class="nav-actions">
+                    <button class="btn btn-primary" id="loginBtn">تسجيل الدخول</button>
+                    <button class="btn btn-secondary" id="registerBtn">إنشاء حساب</button>
+                    <button class="btn btn-icon" id="userBtn" style="display: none;">
+                        <span id="userName"></span>
+                    </button>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="app">
+        <!-- Home Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">منصة New Graphic</h1>
+                    <p class="hero-subtitle">خدمات الدعاية والإعلان الاحترافية</p>
+                    <p class="hero-description">نقدم أفضل حلول التصميم والدعاية لتطوير علامتك التجارية</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-large btn-primary" id="startOrderBtn">اطلب خدمة الآن</button>
+                        <button class="btn btn-large btn-outline" id="viewServicesBtn">تصفح الخدمات</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="services-section">
+            <div class="container">
+                <h2 class="section-title">خدماتنا</h2>
+                <div class="services-grid" id="servicesGrid">
+                    <!-- Services will be loaded dynamically -->
+                    <div class="loading">جاري تحميل الخدمات...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <h2 class="section-title">من نحن</h2>
+                <div class="about-content">
+                    <p>New Graphic هي منصة متخصصة في تقديم خدمات الدعاية والإعلان الاحترافية</p>
+                    <p>نساعد الشركات والأفراد في تطوير هويتهم البصرية وتحقيق أهدافهم التسويقية</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2 class="section-title">اتصل بنا</h2>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <h3>البريد الإلكتروني</h3>
+                        <p>info@newgraphic.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <h3>الهاتف</h3>
+                        <p>+20 123 456 7890</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 New Graphic. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="#" class="whatsapp-float" id="whatsappBtn" title="تواصل معنا على واتساب">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
+            <path d="M16 0C7.164 0 0 7.164 0 16c0 2.827.743 5.484 2.043 7.787L0 32l8.428-2.007A15.894 15.894 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.333c-2.64 0-5.12-.777-7.2-2.107l-.52-.307-5.36 1.28 1.307-5.147-.347-.547A13.227 13.227 0 012.667 16c0-7.36 5.973-13.333 13.333-13.333S29.333 8.64 29.333 16 23.36 29.333 16 29.333z"/>
+            <path d="M23.573 19.547c-.4-.2-2.36-1.173-2.72-1.307-.36-.133-.64-.2-.907.2-.267.4-1.053 1.307-1.28 1.573-.227.267-.467.307-.867.107-.4-.2-1.693-.627-3.227-2-.12-1.173-.893-2.08-2.013-2.653-.4-.2-.04-.307.173-.413.173-.107.4-.267.6-.4.2-.133.267-.227.4-.467.133-.24.067-.44-.04-.613-.107-.173-.907-2.2-1.24-3-.32-.773-.653-.667-.907-.667-.227 0-.493-.027-.76-.027s-.693.107-.973.467c-.493.44-1.347 1.32-1.347 3.213s1.387 3.733 1.573 3.987c.187.253 2.627 4.013 6.36 5.627.893.387 1.587.613 2.133.787.893.28 1.707.24 2.347.147.72-.107 2.36-.973 2.693-1.907.333-.933.333-1.733.227-1.893-.093-.173-.347-.28-.747-.48z"/>
+        </svg>
+    </a>
+
+    <!-- Install PWA Prompt -->
+    <div class="install-prompt" id="installPrompt" style="display: none;">
+        <div class="install-content">
+            <p>قم بتثبيت تطبيق New Graphic للوصول السريع</p>
+            <div class="install-actions">
+                <button class="btn btn-primary btn-small" id="installBtn">تثبيت</button>
+                <button class="btn btn-text btn-small" id="dismissInstallBtn">لاحقاً</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>تسجيل الدخول</h2>
+                <button class="modal-close" data-modal="loginModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">دخول</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>إنشاء حساب جديد</h2>
+                <button class="modal-close" data-modal="registerModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>الاسم الكامل</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم الهاتف</label>
+                        <input type="tel" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>كلمة المرور</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">إنشاء حساب</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav" id="bottomNav" style="display: none;">
+        <a href="#home" class="bottom-nav-item active">
+            <span class="icon">🏠</span>
+            <span class="label">الرئيسية</span>
+        </a>
+        <a href="#services" class="bottom-nav-item">
+            <span class="icon">📋</span>
+            <span class="label">الخدمات</span>
+        </a>
+        <a href="/dashboard.html" class="bottom-nav-item">
+            <span class="icon">📊</span>
+            <span class="label">لوحة التحكم</span>
+        </a>
+        <a href="#notifications" class="bottom-nav-item">
+            <span class="icon">🔔</span>
+            <span class="label">الإشعارات</span>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="/js/config.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/services.js"></script>
+    <script src="/js/notifications.js"></script>
+    <script src="/js/whatsapp.js"></script>
+    <script src="/js/app.js"></script>
+    
+    <!-- Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed', err));
+            });
+        }
+    </script>
+</body>
+</html>
