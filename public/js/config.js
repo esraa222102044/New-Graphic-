@@ -101,6 +101,13 @@ const utils = {
         return `${price} جنيه`;
     },
     
+    // HTML escape to prevent XSS
+    escapeHtml: (text) => {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    },
+    
     // Show toast notification
     showToast: (message, type = 'info') => {
         // Create toast element

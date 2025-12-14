@@ -60,9 +60,9 @@ class ServicesManager {
 
         container.innerHTML = services.map(service => `
             <div class="service-card" data-service-id="${service.id}">
-                ${service.imageUrl ? `<img src="${service.imageUrl}" alt="${service.name}">` : ''}
-                <h3>${service.name}</h3>
-                <p>${service.description || ''}</p>
+                ${service.imageUrl ? `<img src="${utils.escapeHtml(service.imageUrl)}" alt="${utils.escapeHtml(service.name)}">` : ''}
+                <h3>${utils.escapeHtml(service.name)}</h3>
+                <p>${utils.escapeHtml(service.description || '')}</p>
                 ${service.price ? `<div class="price">${utils.formatPrice(service.price)}</div>` : ''}
                 <button class="btn btn-primary btn-block view-service-btn" data-service-id="${service.id}">
                     عرض التفاصيل
@@ -93,20 +93,20 @@ class ServicesManager {
         modal.innerHTML = `
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2>${service.name}</h2>
+                    <h2>${utils.escapeHtml(service.name)}</h2>
                     <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
                 </div>
                 <div class="modal-body">
-                    ${service.imageUrl ? `<img src="${service.imageUrl}" alt="${service.name}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">` : ''}
-                    <p>${service.description || ''}</p>
+                    ${service.imageUrl ? `<img src="${utils.escapeHtml(service.imageUrl)}" alt="${utils.escapeHtml(service.name)}" style="width: 100%; border-radius: 8px; margin-bottom: 1rem;">` : ''}
+                    <p>${utils.escapeHtml(service.description || '')}</p>
                     
                     ${packages.length > 0 ? `
                         <h3 style="margin: 2rem 0 1rem;">الباقات المتاحة</h3>
                         <div class="packages-list">
                             ${packages.map(pkg => `
                                 <div class="package-item" style="background: var(--light-color); padding: 1rem; margin-bottom: 1rem; border-radius: 4px;">
-                                    <h4>${pkg.name}</h4>
-                                    <p>${pkg.description || ''}</p>
+                                    <h4>${utils.escapeHtml(pkg.name)}</h4>
+                                    <p>${utils.escapeHtml(pkg.description || '')}</p>
                                     <div class="price" style="margin: 0.5rem 0;">${utils.formatPrice(pkg.price)}</div>
                                     <button class="btn btn-primary btn-small order-package-btn" data-package-id="${pkg.id}" data-service-id="${serviceId}">
                                         اطلب الآن

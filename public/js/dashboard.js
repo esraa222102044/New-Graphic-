@@ -119,18 +119,18 @@ class DashboardManager {
         return `
             <div class="order-card" data-order-id="${order.id}">
                 <div class="order-header">
-                    <div class="order-number">#${order.id.substr(-6)}</div>
-                    <div class="order-status status-${statusClass}">${statusLabel}</div>
+                    <div class="order-number">#${utils.escapeHtml(order.id.substr(-6))}</div>
+                    <div class="order-status status-${statusClass}">${utils.escapeHtml(statusLabel)}</div>
                 </div>
                 <div class="order-body">
-                    <h4>${order.serviceName || 'خدمة'}</h4>
-                    ${order.packageName ? `<p>الباقة: ${order.packageName}</p>` : ''}
-                    ${order.description ? `<p class="order-description">${order.description}</p>` : ''}
+                    <h4>${utils.escapeHtml(order.serviceName || 'خدمة')}</h4>
+                    ${order.packageName ? `<p>الباقة: ${utils.escapeHtml(order.packageName)}</p>` : ''}
+                    ${order.description ? `<p class="order-description">${utils.escapeHtml(order.description)}</p>` : ''}
                     ${order.totalPrice ? `<p class="order-price">${utils.formatPrice(order.totalPrice)}</p>` : ''}
                 </div>
                 <div class="order-footer">
                     <small>${utils.formatDate(order.createdAt)}</small>
-                    ${authManager.isAdmin() ? `<small>العميل: ${order.userName || order.userEmail}</small>` : ''}
+                    ${authManager.isAdmin() ? `<small>العميل: ${utils.escapeHtml(order.userName || order.userEmail)}</small>` : ''}
                 </div>
             </div>
         `;

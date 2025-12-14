@@ -104,16 +104,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactSection) {
         const whatsappContactItem = document.createElement('div');
         whatsappContactItem.className = 'contact-item';
-        whatsappContactItem.innerHTML = `
-            <h3>واتساب</h3>
-            <p>تواصل معنا مباشرة</p>
-            <button class="btn btn-success" onclick="whatsappManager.openWhatsApp()">
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="white" style="vertical-align: middle; margin-left: 5px;">
-                    <path d="M16 0C7.164 0 0 7.164 0 16c0 2.827.743 5.484 2.043 7.787L0 32l8.428-2.007A15.894 15.894 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/>
-                </svg>
-                افتح واتساب
-            </button>
+        
+        const heading = document.createElement('h3');
+        heading.textContent = 'واتساب';
+        
+        const description = document.createElement('p');
+        description.textContent = 'تواصل معنا مباشرة';
+        
+        const button = document.createElement('button');
+        button.className = 'btn btn-success';
+        button.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 32 32" fill="white" style="vertical-align: middle; margin-left: 5px;">
+                <path d="M16 0C7.164 0 0 7.164 0 16c0 2.827.743 5.484 2.043 7.787L0 32l8.428-2.007A15.894 15.894 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0z"/>
+            </svg>
+            افتح واتساب
         `;
+        button.addEventListener('click', () => whatsappManager.openWhatsApp());
+        
+        whatsappContactItem.appendChild(heading);
+        whatsappContactItem.appendChild(description);
+        whatsappContactItem.appendChild(button);
         
         const contactInfo = contactSection.querySelector('.contact-info');
         if (contactInfo) {

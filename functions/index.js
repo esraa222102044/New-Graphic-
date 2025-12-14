@@ -256,11 +256,39 @@ exports.cleanupOldNotifications = functions.pubsub
 
 // HTTP endpoint to send test notification
 exports.sendTestNotification = functions.https.onRequest(async (req, res) => {
+    // Enable CORS
+    res.set('Access-Control-Allow-Origin', '*');
+    
+    if (req.method === 'OPTIONS') {
+        res.set('Access-Control-Allow-Methods', 'POST');
+        res.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.status(204).send('');
+        return;
+    }
+
     try {
+        // Verify authentication header
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            res.status(401).json({ error: 'Unauthorized - Missing or invalid authorization header' });
+            return;
+        }
+
+        // Verify the ID token
+        const idToken = authHeader.split('Bearer ')[1];
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        
+        // Check if user is admin
+        const userDoc = await db.collection('users').doc(decodedToken.uid).get();
+        if (!userDoc.exists || userDoc.data().role !== 'admin') {
+            res.status(403).json({ error: 'Forbidden - Admin access required' });
+            return;
+        }
+
         const { userId, title, message } = req.body;
 
         if (!userId || !title || !message) {
-            res.status(400).json({ error: 'Missing required parameters' });
+            res.status(400).json({ error: 'Missing required parameters: userId, title, message' });
             return;
         }
 

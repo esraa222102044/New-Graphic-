@@ -154,36 +154,48 @@ function showNotificationsPanel() {
     const modal = document.createElement('div');
     modal.className = 'modal active';
     modal.id = 'notificationsModal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>الإشعارات</h2>
-                <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
-            </div>
-            <div class="modal-body">
-                <div class="notifications-actions" style="margin-bottom: 1rem;">
-                    <button class="btn btn-small btn-text" id="markAllReadBtn">
-                        تحديد الكل كمقروء
-                    </button>
-                </div>
-                <div id="notificationsList"></div>
-            </div>
-        </div>
-    `;
-
+    
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    
+    const modalHeader = document.createElement('div');
+    modalHeader.className = 'modal-header';
+    modalHeader.innerHTML = '<h2>الإشعارات</h2>';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'modal-close';
+    closeBtn.textContent = '×';
+    closeBtn.addEventListener('click', () => modal.remove());
+    modalHeader.appendChild(closeBtn);
+    
+    const modalBody = document.createElement('div');
+    modalBody.className = 'modal-body';
+    
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'notifications-actions';
+    actionsDiv.style.marginBottom = '1rem';
+    
+    const markAllBtn = document.createElement('button');
+    markAllBtn.className = 'btn btn-small btn-text';
+    markAllBtn.textContent = 'تحديد الكل كمقروء';
+    markAllBtn.addEventListener('click', async () => {
+        await notificationsManager.markAllAsRead();
+        notificationsManager.displayNotifications('notificationsList');
+    });
+    actionsDiv.appendChild(markAllBtn);
+    
+    const notifList = document.createElement('div');
+    notifList.id = 'notificationsList';
+    
+    modalBody.appendChild(actionsDiv);
+    modalBody.appendChild(notifList);
+    modalContent.appendChild(modalHeader);
+    modalContent.appendChild(modalBody);
+    modal.appendChild(modalContent);
     document.body.appendChild(modal);
 
     // Display notifications
     notificationsManager.displayNotifications('notificationsList');
-
-    // Mark all as read button
-    const markAllReadBtn = modal.querySelector('#markAllReadBtn');
-    if (markAllReadBtn) {
-        markAllReadBtn.addEventListener('click', async () => {
-            await notificationsManager.markAllAsRead();
-            notificationsManager.displayNotifications('notificationsList');
-        });
-    }
 
     // Close modal on outside click
     modal.addEventListener('click', (e) => {
